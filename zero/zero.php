@@ -6,10 +6,10 @@
  * Time: 16:11
  */
 
-namespace Zero;
+namespace zero;
 
-use Zero\Debug\DebugCore;
-use Zero\Debug\Trace;
+use zero\debug\DebugCore;
+use zero\debug\Trace;
 
 
 class Bootstrap {
@@ -27,15 +27,15 @@ class Bootstrap {
     }
 
     public function run() {
-        spl_autoload_register('Zero\Bootstrap::autoLoad');  //register the auto load function
+        spl_autoload_register('zero\Bootstrap::autoLoad');  //register the auto load function
 
         // setup debug module
         require_once (CORE_PATH.'/debug/DebugCore.php');
-        $this->debug = new Debug\DebugCore($this->config);
+        $this->debug = new debug\DebugCore($this->config);
         set_error_handler(array($this->debug, 'errorHandler'), E_ALL);
 
         if (DEBUG_TRACE)
-            $this->trace = new Debug\Trace();
+            $this->trace = new debug\Trace();
 
         $this->route();
 
@@ -85,9 +85,9 @@ class Bootstrap {
     public static function autoLoad($class_name) {
         echo 'load class: '.$class_name.'<br>';
         $default_class_map = array(
-            'Zero\Base\Controller'  => CORE_PATH.'/base/Controller.php',
-            'Zero\Base\Model'       => CORE_PATH.'/base/Controller.php',
-            'Zero\Debug\Trace'      => CORE_PATH.'/debug/Trace.php'
+            'zero\base\Controller'  => CORE_PATH.'/base/Controller.php',
+            'zero\base\Model'       => CORE_PATH.'/base/Controller.php',
+            'zero\debug\Trace'      => CORE_PATH.'/debug/Trace.php'
         );
         
         if (isset($default_class_map[$class_name])) {

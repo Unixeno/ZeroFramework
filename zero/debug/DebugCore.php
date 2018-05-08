@@ -6,7 +6,7 @@
  * Time: 17:30
  */
 
-namespace Zero\Debug;
+namespace zero\debug;
 
 
 class DebugCore {

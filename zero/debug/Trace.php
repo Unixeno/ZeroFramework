@@ -6,7 +6,7 @@
  * Time: 17:31
  */
 
-namespace Zero\Debug;
+namespace zero\debug;
 
 
 class Trace {
