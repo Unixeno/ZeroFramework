@@ -14,7 +14,7 @@ class Config {
 
     public static function get($name) {
         if (isset(self::$config[$name])) {
-            return self::$config;
+            return self::$config[$name];
         }
     }
 
