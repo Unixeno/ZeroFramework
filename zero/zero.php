@@ -27,33 +27,33 @@ class Bootstrap {
 
         // setup debug module
         require_once (CORE_PATH.'/debug/DebugCore.php');
-        $this->debug = new debug\DebugCore($this->config);
-        set_error_handler(array($this->debug, 'errorHandler'), E_ALL);
-
+        set_error_handler('zero\\debug\\DebugCore::errorHandler', E_ALL);
+        set_exception_handler('zero\\debug\\DebugCore::exceptionHandler');
         //load composer requirements
         require APP_ROOT.'/vendor/autoload.php';
     }
 
     public function run() {
 
+        if (DEBUG_TRACE)
+            require CORE_PATH.'/debug/Trace.php';
+        Trace::start();
+
         $this->config = require CORE_PATH.'/default.configure.php';
         //array_merge($this->config, $config);
         Config::setArray($this->config);
 
-        if (DEBUG_TRACE)
-            $this->trace = new debug\Trace();
-
         $this->route();
 
         if (DEBUG_TRACE) {
-            $this->trace->tick('finished');
-            echo ($this->trace->printTime());
+            Trace::tick('finished');
+            echo (Trace::printTime());
         }
     }
 
     public function route() {
         if (DEBUG_TRACE)
-            $this->trace->tick('routing');
+            Trace::tick('routing');
 
         $routing = array(
             'application' => $this->config['ROUTE_DEFAULT_APPLICATION'],
@@ -84,11 +84,12 @@ class Bootstrap {
 
         $dispatch = new $controller($routing['controller'], $routing['action']);
         call_user_func_array(array($dispatch, $routing['action']), array("one"));
-        $this->debug->errorPrinter();
+        DebugCore::errorPrinter();
     }
 
     public static function autoLoad($class_name) {
-        echo 'load class: '.$class_name.'<br>';
+        if (DEBUG_TRACE)
+            Trace::tick('load class: '.$class_name);
         $default_class_map = array(
             'zero\base\Controller'  => CORE_PATH.'/base/Controller.php',
             'zero\base\Model'       => CORE_PATH.'/base/Model.php',
@@ -106,7 +107,6 @@ class Bootstrap {
             return;
         } else {
             include $file_path;
-            echo 'Load finished</br>';
         }
     }
 }

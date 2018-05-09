@@ -63,6 +63,16 @@ class DebugCore {
         return true;
     }
 
+    public static function exceptionHandler($exception) {
+        array_push(self::$message_list, ['type' => 'EXCEPTION'.$exception->getCode(),
+            'message' => $exception->getMessage(),
+            'file'    => $exception->getFile(),
+            'line'    => $exception->getLine()
+        ]);
+        self::errorPrinter();
+        exit(1);
+    }
+
     public static function errorPrinter($printStake = false) {
         if (count(self::$message_list) == 0)
             return;
