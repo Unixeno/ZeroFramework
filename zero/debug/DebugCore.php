@@ -84,9 +84,12 @@ class DebugCore {
         }
         echo '</table>';
         if ($printStake) {
+            $call_stake = debug_backtrace();
+            array_shift($call_stake);
+            array_shift($call_stake);
             echo '<h3>Call Stake:</h3>';
             echo '<pre>';
-            print_r(debug_backtrace());
+            print_r($call_stake);
             echo '</pre>';
         }
     }
