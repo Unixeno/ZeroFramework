@@ -7,11 +7,14 @@
  */
 
 namespace app\controller;
+use zero\base\Controller;
+use app\model\indexModel;
 
-
-class index {
+class indexController extends Controller{
     public function index() {
         echo '<h1>Hello world!</h1>';
         echo '<p>This message came from index controller!</p>';
+
+        $m = new indexModel();
     }
 }
