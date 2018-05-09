@@ -10,24 +10,24 @@ namespace zero\debug;
 
 
 class Trace {
-    private $start_time;
-    private $time_list = array();
+    private static $start_time;
+    private static $time_list = array();
 
-    public function __construct() {
-        $this->start_time = microtime(true);
-        array_push($this->time_list, ['event' => 'starting', 'time' => '0.000']);
+    public static function start() {
+        self::$start_time = microtime(true);
+        array_push(self::$time_list, ['event' => 'starting', 'time' => '0.000']);
     }
 
-    public function tick($event) {
-        array_push($this->time_list, ['event' => $event,
-            'time' => round(1000 * (microtime(true) - $this->start_time), 3)]);
+    public static function tick($event) {
+        array_push(self::$time_list, ['event' => $event,
+            'time' => round(1000 * (microtime(true) - self::$start_time), 3)]);
     }
 
-    public function getTimeList() {
-        return $this->time_list;
+    public static function getTimeList() {
+        return self::$time_list;
     }
 
-    public function printTime() {
+    public static function printTime() {
         $html = '<h3>Tracing:</h3><table border="1" cellspacing="0">
 <thead>
 <tr>
@@ -35,7 +35,7 @@ class Trace {
 <th>timestamp</th>
 </tr>
 </thead>';
-        foreach ($this->time_list as $item) {
+        foreach (self::$time_list as $item) {
             $html .= '<tr>
 <td>'.$item['event'].'</td>
 <td>'.$item['time'].'ms</td>
