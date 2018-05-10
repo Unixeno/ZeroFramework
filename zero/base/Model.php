@@ -22,6 +22,5 @@ class Model extends Medoo{
         parent::__construct($options);
 
         $this->model = get_class($this);
-        echo $this->model;
     }
 }

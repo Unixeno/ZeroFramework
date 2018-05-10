@@ -18,4 +18,6 @@ return array(
     'DATABASE_SERVER'           => 'localhost',
     'DATABASE_USER'             => 'zero',
     'DATABASE_PASSWORD'         => '',
+
+    'ROUTER'                    => 'Basic',
 );

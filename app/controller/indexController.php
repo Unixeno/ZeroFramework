@@ -12,12 +12,14 @@ use app\model\indexModel;
 
 class indexController extends Controller{
     public function index() {
-//        echo '<h1>Hello world!</h1>';
-//        echo '<p>This message came from index controller!</p>';
-
-        $m = new indexModel();
-
+        $this->assign('title', "Hello World!");
         $this->assign('var', date("Y-m-d h:i:sa", time()));
         $this->render();
+    }
+
+    public function index2() {
+        $this->assign('title', "Good Bye Human Beings！");
+        $this->assign('var', date("Y-m-d h:i:sa", time()));
+        $this->render('index');
     }
 }

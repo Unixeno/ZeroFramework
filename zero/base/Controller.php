@@ -27,7 +27,7 @@ class Controller {
         $this->view->assign($key, $value);
     }
 
-    public function render() {
-        $this->view->render();
+    public function render($template_file = null) {
+        $this->view->render($template_file);
     }
 }

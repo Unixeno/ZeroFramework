@@ -35,11 +35,16 @@ class View {
         $this->assigned_list[$key] = $value;
     }
 
-    public function render() {
+    public function render($template_file = null) {
         if (DEBUG_TRACE) {
             Trace::tick('Start rendering');
         }
-        echo $this->twig->render($this->action.'.html', $this->assigned_list);
+
+        if ($template_file == NULL) {
+            $template_file = $this->action;
+        }
+
+        echo $this->twig->render($template_file.'.html', $this->assigned_list);
         if (DEBUG_TRACE) {
             Trace::tick('Rendering finished');
         }

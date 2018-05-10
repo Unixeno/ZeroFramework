@@ -8,6 +8,7 @@
 
 namespace zero;
 
+use Twig\Extension\CoreExtension;
 use zero\debug\DebugCore;
 use zero\debug\Trace;
 use zero\Config;
@@ -55,22 +56,14 @@ class Bootstrap {
         if (DEBUG_TRACE)
             Trace::tick('routing');
 
-        $routing = array(
-            'application' => $this->config['ROUTE_DEFAULT_APPLICATION'],
-            'controller'  => $this->config['ROUTE_DEFAULT_CONTROLLER'],
-            'action'      => $this->config['ROUTE_DEFAULT_ACTION']
-        );
-
-        if ($this->config['URL_MODE'] == 1) {
-            if (isset($_GET['a']))
-                $routing['application'] = $_GET['a'];
-            if (isset($_GET['c']))
-                $routing['controller'] = $_GET['c'];
-            if (isset($_GET['r']))
-                $routing['controller'] = $_GET['r'];
-        } else {
-            //to do
+        $router = 'zero\\router\\'.Config::get('ROUTER').'Router';
+        if (!class_exists($router)) {
+            $router = 'app\\router\\'.Config::get('ROUTER').'Router';
         }
+
+
+        $routing = $router::parser(1, Request::requestMethod());
+
         if ($this->config['SINGLE_APPLICATION']) {
             $controller = 'app\\controller\\'.$routing['controller'].'Controller';
         } else {
@@ -94,7 +87,8 @@ class Bootstrap {
             'zero\base\Controller'  => CORE_PATH.'/base/Controller.php',
             'zero\base\Model'       => CORE_PATH.'/base/Model.php',
             'zero\debug\Trace'      => CORE_PATH.'/debug/Trace.php',
-            'zero\Config'           => CORE_PATH.'/Config.php'
+            'zero\Config'           => CORE_PATH.'/Config.php',
+            'zero\BasicRouter'      => CORE_PATH.'/router/BasicRouter.php'
         );
         
         if (isset($default_class_map[$class_name])) {
@@ -103,7 +97,6 @@ class Bootstrap {
             $file_path = APP_ROOT.'/'.str_replace('\\', '/', $class_name).'.php';
         }
         if (!is_file($file_path)) {
-            trigger_error('Can\'t find class: '.$class_name.' in '.$file_path, E_USER_ERROR);
             return;
         } else {
             include $file_path;
