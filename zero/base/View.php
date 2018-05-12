@@ -44,9 +44,12 @@ class View {
             $template_file = $this->action;
         }
 
-        echo $this->twig->render($template_file.'.html', $this->assigned_list);
+        $content = $this->twig->render($template_file.'.html', $this->assigned_list);
+
         if (DEBUG_TRACE) {
             Trace::tick('Rendering finished');
         }
+
+        return $content;
     }
 }

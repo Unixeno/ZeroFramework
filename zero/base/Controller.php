@@ -9,6 +9,7 @@
 namespace zero\base;
 
 use zero\base\View;
+use zero\Respond;
 
 class Controller {
 
@@ -27,7 +28,12 @@ class Controller {
         $this->view->assign($key, $value);
     }
 
+    public function display($template_file = null) {
+        Respond::$content = $this->view->render($template_file);
+        Respond::respond();
+    }
+
     public function render($template_file = null) {
-        $this->view->render($template_file);
+        return $this->view->render($template_file);
     }
 }
