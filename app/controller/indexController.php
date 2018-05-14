@@ -8,18 +8,34 @@
 
 namespace app\controller;
 use zero\base\Controller;
-use app\model\indexModel;
+use zero\Request;
+use zero\Respond;
 
 class indexController extends Controller{
     public function index() {
         $this->assign('title', "Hello World!");
-        $this->assign('var', date("Y-m-d h:i:sa", time()));
-        $this->render();
+        Respond::headers()->set('access-control-allow-origin', 'https://yangwang.hk/');
+        Respond::cookie()->set('aha', 'value');
+        $this->display();
+    }
+
+    public function show404() {
+        Respond::setResponseCode(404);
+        $this->display('404');
+    }
+
+    public function getcookie() {
+        Respond::cookie()->set('aha', 'value', 86400);
+        Respond::respond();
+    }
+
+    public function deletecookie() {
+        Respond::cookie()->delete('aha');
+        Respond::respond();
     }
 
     public function index2() {
         $this->assign('title', "Good Bye Human Beings！");
-        $this->assign('var', date("Y-m-d h:i:sa", time()));
-        $this->render('index');
+        $this->display('index');
     }
 }
