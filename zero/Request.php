@@ -11,7 +11,8 @@ namespace zero;
 
 class Request {
 
-    private static $filter_method = self::filter;
+    private static $filter_method;
+    private static $cookie;
 
     public static function get($key) {
         if (isset($_GET[$key])) {
@@ -29,6 +30,16 @@ class Request {
         }
     }
 
+    public static function cookie() {
+        if (isset(self::$cookie)) {
+            return self::$cookie;
+        }
+        else {
+            self::$cookie = new Cookie();
+            return self::$cookie;
+        }
+    }
+
     public static function requestMethod() {
         return $_SERVER['REQUEST_METHOD'];
     }
@@ -37,7 +48,7 @@ class Request {
         return explode('?', $_SERVER["REQUEST_URI"])[0];
     }
 
-    private static function filter($str) {
-
+    public static function filter($str) {
+        return $str;
     }
 }

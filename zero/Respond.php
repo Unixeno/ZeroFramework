@@ -15,6 +15,7 @@ class Respond {
     private static $status_code = 200;
     private static $status_text = 'OK';
     private static $header;
+    private static $cookie;
 
     private static $http_statuses = [
         100 => 'Continue',
@@ -97,6 +98,15 @@ class Respond {
         }
     }
 
+    public static function cookie() {
+        if (isset(self::$cookie)) {
+            return self::$cookie;
+        } else {
+            self::$cookie = Request::cookie();
+            return self::$cookie;
+        }
+    }
+
     public static function jsonRespond() {
 
     }
@@ -132,6 +142,7 @@ class Respond {
             return;
         }
         self::sendHeader();
+        self::sendCookie();
         self::sendContent();
         self::$is_sent = true;
     }
@@ -155,9 +166,20 @@ class Respond {
         header($_SERVER['SERVER_PROTOCOL']." ".self::$status_code." ".self::$status_text, true);
     }
 
+    private static function sendCookie() {
+        foreach (self::cookie()->getAllUpdates() as $name => $obj) {
+            if ($obj['delete'] === false) {
+                setcookie($name, $obj['value'], $obj['expiration'], $obj['path'], $obj['domain'],
+                    $obj['secure'], $obj['httponly']);
+            } else {
+                setcookie($name, null, time() - 86400);
+            }
+        }
+    }
+
     /**
      * Send a redirect respond
-     * @param $url the URL that you want to redirect
+     * @param string $url the URL that you want to redirect
      * @param bool $permanent choose the http status code, set true to use 301, the default value is false
      */
     public static function redirect($url, $permanent = false) {
