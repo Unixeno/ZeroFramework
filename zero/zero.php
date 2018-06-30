@@ -75,7 +75,7 @@ class Bootstrap {
             trigger_error('Method not exist in Controller'.$controller, E_USER_ERROR);
         }
 
-        $dispatch = new $controller($routing['controller'], $routing['action']);
+        $dispatch = new $controller($routing['controller'], $routing['action'], $router);
         call_user_func_array(array($dispatch, $routing['action']), array("one"));
         DebugCore::errorPrinter();
     }

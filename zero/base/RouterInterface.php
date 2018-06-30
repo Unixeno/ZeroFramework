@@ -12,6 +12,6 @@ interface RouterInterface {
 
     public static function parser($url, $request_method);
 
-    public static function urlGenerator($route, $param);
+    public static function urlGenerator($route, $param = null);
 
 }

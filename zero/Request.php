@@ -48,6 +48,17 @@ class Request {
         return explode('?', $_SERVER["REQUEST_URI"])[0];
     }
 
+    public static function requestIP($proxy = false) {
+        if ($proxy) {
+            return isset($_SERVER["HTTP_X_FORWARDED_FOR"]) ? explode(',', $_SERVER["HTTP_X_FORWARDED_FOR"]) : $_SERVER["REMOTE_ADDR"];
+        }
+        return $_SERVER["REMOTE_ADDR"];
+    }
+
+    public static function requestFile() {
+        return $_SERVER['PHP_SELF'];
+    }
+
     public static function filter($str) {
         return $str;
     }

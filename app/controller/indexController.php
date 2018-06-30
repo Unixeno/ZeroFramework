@@ -13,9 +13,15 @@ use zero\Respond;
 
 class indexController extends Controller{
     public function index() {
-        $this->assign('title', "Hello World!");
-        Respond::headers()->set('access-control-allow-origin', 'https://yangwang.hk/');
-        Respond::cookie()->set('aha', 'value');
+        $this->assign('title', 123);
+        $this->assign('content', $this->router::urlGenerator('',
+            [
+                'a' => 'a',
+                'gf' => 'b',
+                '#' => '123'
+            ]));
+//        Respond::headers()->set('access-control-allow-origin', 'https://yangwang.hk/');
+//        Respond::cookie()->set('aha', 'value');
         $this->display();
     }
 

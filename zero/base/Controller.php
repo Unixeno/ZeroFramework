@@ -16,10 +16,12 @@ class Controller {
     protected $controller;
     protected $action;
     protected $view;
+    protected $router;
 
-    public function __construct($controller, $action) {
+    public function __construct($controller, $action, $router) {
         $this->controller = $controller;
         $this->action     = $action;
+        $this->router     = $router;
 
         $this->view = new View($controller, $action);
     }

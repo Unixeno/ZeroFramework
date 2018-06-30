@@ -23,12 +23,6 @@ class View {
     public function __construct($controller, $action) {
         $this->controller = $controller;
         $this->action     = $action;
-
-        $this->loader = new \Twig_Loader_Filesystem(APP_ROOT.'/app/view/'.$controller);
-        $this->twig = new \Twig_Environment($this->loader, array(
-            'cache' => APP_ROOT.'/runtime/template_cache',
-            'auto_reload' => APP_DEBUG
-        ));
     }
 
     public function assign($key, $value) {
@@ -39,7 +33,11 @@ class View {
         if (DEBUG_TRACE) {
             Trace::tick('Start rendering');
         }
-
+        $this->loader = new \Twig_Loader_Filesystem(APP_ROOT.'/app/view/'.$this->controller);
+        $this->twig = new \Twig_Environment($this->loader, array(
+            'cache' => APP_ROOT.'/runtime/template_cache',
+            'debug' => APP_DEBUG
+        ));
         if ($template_file == NULL) {
             $template_file = $this->action;
         }
